@@ -1,0 +1,15 @@
+
+--- Testing: https://api-inference.huggingface.co/models/google/flan-t5-base ---
+Status: 410
+Body: {"error":"https://api-inference.huggingface.co is no longer supported. Please use https://router.huggingface.co instead."}
+
+--- Testing: https://api-inference.huggingface.co/v1/chat/completions ---
+Status: 410
+Body: {"error":"https://api-inference.huggingface.co is no longer supported. Please use https://router.huggingface.co instead."}
+
+--- Testing: https://api.huggingface.co/models/google/flan-t5-base ---
+Error: HTTPSConnectionPool(host='api.huggingface.co', port=443): Max retries exceeded with url: /models/google/flan-t5-base (Caused by NameResolutionError("HTTPSConnection(host='api.huggingface.co', port=443): Failed to resolve 'api.huggingface.co' ([Errno 11001] getaddrinfo failed)"))
+
+--- Testing: https://router.huggingface.co/hf-inference/models/google/flan-t5-base ---
+Status: 404
+Body: Not Found
