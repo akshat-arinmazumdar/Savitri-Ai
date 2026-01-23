@@ -2,10 +2,7 @@
 # Git Ignore for Savitri Project
 
 # Virtual Environment
-venv/Lib/
-venv/Scripts/
-venv/Include/
-venv/pyvenv.cfg
+# (Included per user request, though not standard practice)
 venv/__pycache__/
 *.pyc
 
