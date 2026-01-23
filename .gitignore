@@ -1,0 +1,29 @@
+# Git Ignore for Savitri Project
+
+# Virtual Environment
+venv/Lib/
+venv/Scripts/
+venv/Include/
+venv/pyvenv.cfg
+venv/__pycache__/
+*.pyc
+
+# Local cache/logs
+voices/
+*.mp3
+api_debug.log
+pipeline_temp.txt
+hf_error.json
+api_results.txt
+output.txt
+url_results.txt
+
+# React / Node
+node_modules/
+venv/react/node_modules/
+venv/react/dist/
+.env
+
+# OS Files
+.DS_Store
+Thumbs.db
