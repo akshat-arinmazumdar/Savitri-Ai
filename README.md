@@ -63,3 +63,19 @@ npm install
 Created by Akshat Arin Mazumdar.
 ---
 *Happy Learning with Savitri!*
+
+
+<img width="1897" height="862" alt="brave_screenshot_localhost" src="https://github.com/user-attachments/assets/357bf168-52cb-46a3-a028-c8509c1b84d8" />
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+<img width="1898" height="864" alt="brave_screenshot_localhost (1)" src="https://github.com/user-attachments/assets/f141e0a9-772d-4ad8-82f6-8ef1afd61872" />
+
+
+
