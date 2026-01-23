@@ -1,0 +1,13 @@
+# Python virtual env
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+__pycache__/
+*.pyc
+
+# Node modules
+react/node_modules/
+node_modules/
+dist/
+.env
