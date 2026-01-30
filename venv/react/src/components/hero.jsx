@@ -5,7 +5,7 @@ const Hero = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="hero-container">
+        <section className="hero-container" id="hero">
             <Navbar />
             <div className="hero-content">
                 <h1 className="hero-title">Savitri-Ai</h1>

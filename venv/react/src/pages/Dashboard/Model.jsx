@@ -1,15 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Model = () => {
     const [file, setFile] = useState(null);
     const [topics, setTopics] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [status, setStatus] = useState('Idle');
-    const [logs, setLogs] = useState(['> System ready. Waiting for file upload...']);
+    const [logs, setLogs] = useState(['\u003e System ready. Waiting for file upload...']);
     const [audioInstance, setAudioInstance] = useState(null);
     const [playingIndex, setPlayingIndex] = useState(null);
+    const consoleRef = useRef(null);
 
-    const addLog = (msg) => setLogs(prev => [...prev, `> ${msg}`]);
+    // Auto-scroll console to bottom when logs update
+    useEffect(() => {
+        if (consoleRef.current) {
+            consoleRef.current.scrollTop = consoleRef.current.scrollHeight;
+        }
+    }, [logs]);
+
+    const addLog = (msg) => setLogs(prev => [...prev, `\u003e ${msg}`]);
 
     const handleUpload = async (e) => {
         const selectedFile = e.target.files[0];
@@ -31,17 +39,21 @@ const Model = () => {
         formData.append('file', selectedFile);
 
         try {
-            const uploadRes = await fetch('http://localhost:8000/api/upload', {
+            const uploadRes = await fetch('http://localhost:8001/api/upload', {
                 method: 'POST',
                 body: formData
             });
 
             if (!uploadRes.ok) throw new Error('Upload failed');
 
+            const uploadData = await uploadRes.json();
+
             setStatus('Analyzing...');
             addLog('PDF Uploaded. Extracting topics...');
 
-            const topicsRes = await fetch(`http://localhost:8000/api/topics?filename=${selectedFile.name}`);
+            const topicsRes = await fetch(`http://localhost:8001/api/topics?filename=${uploadData.filename}`);
+            if (!topicsRes.ok) throw new Error('Topic extraction failed');
+
             const topicsData = await topicsRes.json();
 
             setTopics(topicsData.topics.map(t => ({
@@ -61,7 +73,7 @@ const Model = () => {
     };
 
     const sanitizeFilename = (name) => {
-        return name.replace(/[^\w\s\.-]/g, '').trim().replace(/\s+/g, '_').toLowerCase().substring(0, 60) + "_v2.mp3";
+        return name.replace(/[^\w\s.-]/g, '').trim().replace(/\s+/g, '_').toLowerCase().substring(0, 60) + "_v2.mp3";
     };
 
     const handlePlayTopic = async (index) => {
@@ -94,7 +106,7 @@ const Model = () => {
                 setStatus('Generating...');
                 addLog(`Generating audio for: ${topic.title}...`);
 
-                const res = await fetch('http://localhost:8000/api/generate', {
+                const res = await fetch('http://localhost:8001/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ topic: topic.title, filename: topic.filename })
@@ -107,7 +119,7 @@ const Model = () => {
                 addLog('Audio ready. Playing...');
             }
 
-            const newAudio = new Audio(`http://localhost:8000/api/voices/${topic.filename}`);
+            const newAudio = new Audio(`http://localhost:8001/api/voices/${topic.filename}`);
             setAudioInstance(newAudio);
             setPlayingIndex(index);
 
@@ -170,7 +182,7 @@ const Model = () => {
                             <h3>Processing Output</h3>
                             <span className={`status-badge ${status.toLowerCase()}`}>{status}</span>
                         </div>
-                        <div className="output-console">
+                        <div className="output-console" ref={consoleRef}>
                             <div className="console-text">
                                 {logs.map((log, i) => <div key={i}>{log}</div>)}
                             </div>
@@ -186,6 +198,9 @@ const Model = () => {
                 .status-badge.error { background: #f44336 !important; }
                 .status-badge.ready { background: #4CAF50 !important; }
                 .status-badge.uploading, .status-badge.analyzing { background: #2196F3 !important; }
+                .status-badge.generating { background: #FF9800 !important; color: #fff !important; }
+                .status-badge.playing { background: #4CAF50 !important; color: #fff !important; }
+                .status-badge.paused { background: #FFC107 !important; color: #000 !important; }
             `}</style>
         </div>
     )

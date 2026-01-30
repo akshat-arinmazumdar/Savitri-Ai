@@ -11,6 +11,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -139,17 +145,7 @@ body {
   width: 100%;
 }
 
-/* Adjust Hero Container for absolute navbar */
-.hero-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  padding: 2rem;
-  position: relative;
-  /* Ensure navbar positions relative to this */
-}
+
 
 /* About Component Styles */
 .about-container {
@@ -382,6 +378,7 @@ body {
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  scroll-behavior: smooth;
 }
 
 .console-text {
@@ -389,6 +386,10 @@ body {
   /* Terminal Green */
   margin: 0;
   line-height: 1.6;
+}
+
+.console-text div {
+  margin-bottom: 4px;
 }
 
 .placeholder-text {
@@ -423,9 +424,10 @@ body {
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
   border-radius: 8px;
+  border-left: 3px solid transparent;
 }
 
 .playlist-item:last-child {
@@ -434,6 +436,12 @@ body {
 
 .playlist-item:hover {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.playlist-item.playing {
+  background: rgba(99, 102, 241, 0.1);
+  border-left: 3px solid #6366f1;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
 .play-icon {

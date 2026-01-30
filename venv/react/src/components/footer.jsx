@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="footer">
+        <footer className="footer" id="contact">
             <div className="footer-content">
                 <p>&copy; {new Date().getFullYear()} Savitri-Ai. All rights reserved.</p>
                 <div className="footer-links">

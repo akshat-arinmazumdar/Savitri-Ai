@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Git Ignore for Savitri Project
 
 # Virtual Environment
@@ -15,6 +14,7 @@ hf_error.json
 api_results.txt
 output.txt
 url_results.txt
+crash_log.txt
 
 # React / Node
 node_modules/
@@ -22,10 +22,19 @@ venv/react/node_modules/
 venv/react/dist/
 .env
 
+# Django
+db.sqlite3
+media/
+SavitriBackend/db.sqlite3
+SavitriBackend/media/
+SavitriBackend/__pycache__/
+SavitriBackend/*/ __pycache__/
+*/__pycache__/
+
 # OS Files
 .DS_Store
 Thumbs.db
-=======
+
 # Logs
 logs
 *.log
@@ -35,19 +44,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
->>>>>>> 2275a0c65d9029ea5d9eb2621eed0a3e61b9dd21

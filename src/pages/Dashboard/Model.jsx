@@ -1,4 +1,59 @@
+import { useState, useRef } from 'react'
+
 const Model = () => {
+    const [status, setStatus] = useState("Idle")
+    const [logs, setLogs] = useState(["Waiting for file upload...", "> System ready."])
+    const fileInputRef = useRef(null)
+
+    const handleUploadClick = () => {
+        fileInputRef.current.click()
+    }
+
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0]
+        if (!file) return
+
+        if (file.type !== "application/pdf") {
+            addLog("❌ Error: Only PDF files are allowed.")
+            return
+        }
+
+        setStatus("Uploading...")
+        addLog(`📂 Uploading: ${file.name}...`)
+
+        const formData = new FormData()
+        formData.append("file", file)
+
+        try {
+            const response = await fetch("http://localhost:8001/api/upload", {
+                method: "POST",
+                body: formData,
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.detail || "Upload failed")
+            }
+
+            const data = await response.json()
+            addLog("✅ Upload successful!")
+            addLog(`📄 Server File ID: ${data.filename}`)
+            setStatus("Processing")
+
+            // Allow user to proceed to topic extraction (future step)
+            // fetchTopics(data.filename) 
+
+        } catch (error) {
+            console.error("Upload error:", error)
+            setStatus("Error")
+            addLog(`❌ Upload Failed: ${error.message}`)
+        }
+    }
+
+    const addLog = (message) => {
+        setLogs(prev => [...prev, message])
+    }
+
     return (
         <div className="dashboard-container">
             <nav className="dashboard-nav">
@@ -14,9 +69,16 @@ const Model = () => {
                 <div className="main-layout">
                     {/* Left Side: Input & Playlist */}
                     <div className="workspace-container">
-                        <div className="upload-box">
+                        <div className="upload-box" onClick={handleUploadClick}>
                             <div className="plus-icon">+</div>
                             <span>Upload PDF Page</span>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ display: "none" }}
+                                accept=".pdf"
+                                onChange={handleFileChange}
+                            />
                         </div>
 
                         <div className="playlist-section">
@@ -59,12 +121,13 @@ const Model = () => {
                     <div className="output-panel">
                         <div className="output-header">
                             <h3>Processing Output</h3>
-                            <span className="status-badge">Idle</span>
+                            <span className="status-badge">{status}</span>
                         </div>
                         <div className="output-console">
-                            <p className="console-text placeholder-text">
-                                Waiting for file upload...<br />
-                                > System ready.<br />
+                            <p className="console-text">
+                                {logs.map((log, index) => (
+                                    <span key={index}>{log}<br /></span>
+                                ))}
                             </p>
                         </div>
                     </div>
